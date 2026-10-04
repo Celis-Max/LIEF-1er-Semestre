@@ -1,0 +1,31 @@
+{
+ "name": "Mampara 1916",
+ "short_name": "Mampara 1916",
+ "lang": "es-MX",
+ "dir": "ltr",
+ "description": "Libro digital: el PIB y la deuda externa de México, de la Revolución al cardenismo.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#15100b",
+ "theme_color": "#15100b",
+ "icons": [
+  {
+   "src": "img/iconos/icono-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "img/iconos/icono-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "img/iconos/icono-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15100b">
+<meta name="description" content="Libro digital: la economía de México de 1916 a 1940 (PIB y deuda externa) en una mampara interactiva.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mampara 1916">
+<title>Mampara 1916 · México 1916–1940</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="img/iconos/icono-192.png">
+<link rel="apple-touch-icon" href="img/iconos/apple-touch-icon-180.png">
+<link rel="preload" as="image" href="img/papel-franja.jpg">
+<link rel="stylesheet" href="estilos.css">
+<script src="datos.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<div class="app" id="app" lang="es-MX" data-estado="portada">
+
+  <!-- ============ LA MAMPARA ============ -->
+  <main class="sala" id="sala" aria-label="Mampara: línea de tiempo de 1916 a 1940. Desliza hacia los lados.">
+    <div class="recorrido">
+      <aside class="cedula" id="cedula">
+        <div class="cedula__logos"><img src="img/logo-uaeh.svg" alt="UAEH"><img src="img/logo-apan.svg" alt="Escuela Superior de Apan"></div>
+        <h2>Cómo leer la mampara</h2>
+        <p class="cedula__sub">México, 1916–1940 · PIB y deuda externa</p>
+        <div class="cedula__regla"></div>
+        <ol>
+          <li><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="5.5" fill="#6b4a1f"/></svg><span><b>PIB</b><small>miles de millones de pesos de 2013</small></span></li>
+          <li><svg viewBox="0 0 20 20"><rect x="5.5" y="5.5" width="9" height="9" transform="rotate(45 10 10)" fill="#1f3a5c"/></svg><span><b>Deuda externa</b><small>millones de dólares</small></span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="#2b2015" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h13M12 6l4 4-4 4"/></svg><span>Desliza para recorrer los años</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="#2b2015" stroke-width="1.5" stroke-linejoin="round"><rect x="5" y="3" width="10" height="14" rx="1"/><path d="M5 10h10" stroke-dasharray="2 1.6"/></svg><span>Toca una hoja para desplegarla</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="#2b2015" stroke-width="1.5" stroke-linecap="round"><path d="M3 15h14M6 15v-3M10 15V8M14 15v-5"/></svg><span>Toca un año para ver sus indicadores</span></li>
+        </ol>
+        <p class="cedula__nota">El hilo punteado de cada hoja llega al dato de la gráfica que explica.</p>
+        <button class="boton-linea" type="button" data-abre="instalar" hidden>Instalar en el celular</button>
+      </aside>
+
+      <div class="franja" id="franja">
+        <img class="franja__papel" src="img/papel-franja.jpg" alt="" decoding="async" draggable="false">
+        <div class="periodos" id="periodos"></div>
+        <svg class="lienzo" id="lienzo" aria-hidden="true"></svg>
+        <div class="columna" id="columna" hidden></div>
+        <div class="colgadas" id="colgadas"></div>
+        <div class="eje" id="eje"></div>
+      </div>
+
+      <aside class="cedula cedula--fin">
+        <h2>1940</h2>
+        <p class="cedula__sub">Fin del recorrido</p>
+        <button class="boton-tinta" id="alInicio" type="button">Volver a 1916</button>
+        <button class="boton-linea" type="button" data-abre="creditos">Créditos y fuentes</button>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ============ MINIMAPA ============ -->
+  <nav class="mapa" id="mapa" aria-label="Etapas">
+    <button class="mapa__libro" id="aPortada" type="button" aria-label="Volver a la portada del libro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.5C10 4.8 7 4.5 3.5 5v13c3.5-.5 6.5-.2 8.5 1.5 2-1.7 5-2 8.5-1.5V5C17 4.5 14 4.8 12 6.5zM12 6.5v13"/></svg>
+    </button>
+    <div class="mapa__tira" id="tira"></div>
+  </nav>
+
+  <div class="ficha" id="ficha" hidden></div>
+  <!-- aviso para instalar (sólo en la versión instalable) -->
+  <div class="instala" id="instala" role="dialog" aria-label="Instalar la app" hidden>
+    <img alt="" width="56" height="56">
+    <div class="instala__txt"><b>Instala Mampara 1916</b><span>Se abre a pantalla completa y funciona sin internet.</span></div>
+    <div class="instala__bot"><button class="instala__no" id="instalaNo" type="button">Ahora no</button><button class="instala__si" id="instalaSi" type="button">Instalar</button></div>
+  </div>
+  <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+  <!-- ============ VISOR DE UNA HOJA ============ -->
+  <div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Hoja desplegada" hidden>
+    <div class="visor__velo" id="velo"></div>
+    <div class="visor__rollo" id="rollo"><div class="visor__lienzo"><div class="visor__etapa" id="visorEtapa"></div><article class="hoja" id="hoja"></article></div></div>
+    <div class="visor__sombra"></div>
+    <button class="visor__cerrar" id="cerrar" type="button" aria-label="Cerrar la hoja y volver a la mampara">
+      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+    </button>
+    <div class="visor__nav">
+      <button id="anterior" type="button" aria-label="Hoja anterior"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4.5L7 10l5.5 5.5"/></svg></button>
+      <span id="cuenta" aria-live="polite">1 / 5</span>
+      <button id="siguiente" type="button" aria-label="Hoja siguiente"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 4.5L13 10l-5.5 5.5"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ============ PANEL (créditos, instalar) ============ -->
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitulo" hidden>
+    <div class="panel__hoja">
+      <header><h2 id="panelTitulo"></h2>
+        <button class="panel__cerrar" id="panelCerrar" type="button" aria-label="Cerrar">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+        </button></header>
+      <div class="panel__cuerpo" id="panelCuerpo"></div>
+    </div>
+  </div>
+
+  <!-- ============ PORTADA DEL LIBRO ============ -->
+  <div class="tapa" id="tapa">
+    <div class="tapa__fondo"></div>
+    <div class="tapa__libro">
+      <div class="tapa__cubierta" data-k="0">
+        <div class="tapa__logos"><img src="img/logo-uaeh.svg" alt="Universidad Autónoma del Estado de Hidalgo"><img src="img/logo-apan.svg" alt="Escuela Superior de Apan"></div>
+        <div class="tapa__centro">
+          <p class="tapa__ante">Principios de Economía · Libro digital</p>
+          <h1 class="tapa__titulo"><span>México</span><span>1916 – 1940</span></h1>
+          <p class="tapa__sub">El PIB y la deuda externa, de la Revolución al cardenismo</p>
+        </div>
+        <svg class="tapa__chispa" id="tapaChispa" viewBox="0 0 250 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="tapa__acciones">
+          <button class="tapa__abrir" id="abrir" type="button">Abrir el libro
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h13M11.5 5.5L16 10l-4.5 4.5"/></svg>
+          </button>
+          <ol class="tapa__indice" id="indice" aria-label="Ir a una etapa"></ol>
+        </div>
+        <p class="tapa__equipo">
+          <b><span>Celis Galindo Max</span> · <span>Muñoz Vidal Erick</span> · <span>Hernández Vázquez Luis Ángel</span> · <span>Acosta Calva Israel</span> · <span>Lopez Casillas Sinuhe Demir</span></b>
+          <i>Licenciatura en Ingeniería Económica y Financiera · Primer semestre · Escuela Superior de Apan, UAEH</i>
+          <button class="tapa__creditos" type="button" data-abre="creditos">Créditos y fuentes</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
