@@ -27,7 +27,8 @@ git push origin main main:gh-pages
 ## Reglas
 
 - **No renombrar ni mover `mampara1916/`**: la app ya está instalada en celulares y hay flyers impresos con un QR a esa dirección.
-- Al cambiar cualquier archivo de `mampara1916/`, cambia `VERSION` en `mampara1916/sw.js` (y agrega a `ARCHIVOS` los archivos nuevos): así los celulares que ya la tienen reciben el aviso «Hay una versión nueva».
+- Al cambiar cualquier archivo de `mampara1916/`, corre `python3 mampara1916/armar.py`: cambia `VERSION` en `sw.js` y pone al día lo que el service worker guarda (`NUCLEO` y `HUELLAS`). Así los celulares que ya la tienen reciben el aviso «Hay una versión nueva».
+- La app tiene tres modos (lite, normal, inmersivo); el 3D sólo va en el inmersivo. Detalles en `mampara1916/CLAUDE.md`.
 - Rutas siempre relativas: el sitio vive en una subcarpeta.
 - No cambiar textos, cifras ni fechas de `mampara1916/datos.js` sin que lo pida el equipo.
 - Un trabajo nuevo va en su propia carpeta y se agrega como tarjeta en `index.html` y como fila en `README.md`.

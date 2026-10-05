@@ -1,18 +1,6 @@
 /* el contenido nunca queda debajo de la muesca ni de la barra de inicio */
 :root{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#15100b}
 html{box-sizing:border-box}
-@font-face{font-family:'Rye';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/rye.woff2) format('woff2')}
-@font-face{font-family:'IM Fell English';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/fell.woff2) format('woff2')}
-@font-face{font-family:'IM Fell English';font-weight:400;font-style:italic;font-display:swap;src:url(fuentes/fell-italica.woff2) format('woff2')}
-@font-face{font-family:'Playfair Display';font-weight:900;font-style:normal;font-display:swap;src:url(fuentes/playfair-900.woff2) format('woff2')}
-@font-face{font-family:'Playfair Display';font-weight:700;font-style:italic;font-display:swap;src:url(fuentes/playfair-700-italica.woff2) format('woff2')}
-@font-face{font-family:'Limelight';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/limelight.woff2) format('woff2')}
-@font-face{font-family:'Special Elite';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/special-elite.woff2) format('woff2')}
-@font-face{font-family:'Bebas Neue';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/bebas-neue.woff2) format('woff2')}
-@font-face{font-family:'Lora';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/lora-400.woff2) format('woff2')}
-@font-face{font-family:'Lora';font-weight:400;font-style:italic;font-display:swap;src:url(fuentes/lora-400-italica.woff2) format('woff2')}
-@font-face{font-family:'Lora';font-weight:600;font-style:normal;font-display:swap;src:url(fuentes/lora-600.woff2) format('woff2')}
-@font-face{font-family:'Lora';font-weight:700;font-style:normal;font-display:swap;src:url(fuentes/lora-700.woff2) format('woff2')}
 /* =====================================================================
    LIBRO DIGITAL · MAMPARA 1916–1940 (boceto)
    Estructura:  .app > .sala (franja con scroll horizontal) + .mapa (minimapa)
@@ -118,7 +106,7 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .anillo.pulso{animation:pulso 1.3s var(--suave) 1}
 @keyframes pulso{0%{transform:scale(1);stroke-width:2.4}45%{transform:scale(2.3);stroke-width:1}100%{transform:scale(1)}}
 
-.columna{position:absolute;top:var(--hh);bottom:0;width:var(--yw);pointer-events:none;background:linear-gradient(180deg,rgba(255,252,240,0),rgba(255,252,240,.34) 30%,rgba(255,252,240,.34));
+.columna{position:absolute;top:var(--hh);bottom:0;width:var(--yw);pointer-events:none;transform-origin:50% 100%;background:linear-gradient(180deg,rgba(255,252,240,0),rgba(255,252,240,.34) 30%,rgba(255,252,240,.34));
   border-left:1px dashed rgba(43,32,21,.4);border-right:1px dashed rgba(43,32,21,.4)}
 
 /* hojas colgadas (portadas) */
@@ -138,7 +126,7 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .hoja-mini .clip::after{content:"";position:absolute;left:22%;right:22%;top:-45%;height:60%;border:1.5px solid #9a9a9e;border-bottom:0;border-radius:6px 6px 0 0}
 @media (hover:hover){.hoja-mini:not(.pendiente):hover .portada{transform:translateY(-3px) scale(1.035);box-shadow:0 2px 2px rgba(0,0,0,.3),0 14px 24px rgba(40,22,6,.42)}}
 .hoja-mini:active .portada{transform:scale(.97)}
-.hoja-mini.levantada .portada,.hoja-mini.levantada .clip{visibility:hidden}
+.hoja-mini.levantada .portada{visibility:hidden}
 .hoja-mini.asienta .portada{animation:asienta .5s var(--suave)}
 @keyframes asienta{from{transform:translateY(-10px) scale(1.08)}to{transform:none}}
 .hoja-mini.pendiente{display:grid;border-radius:3px;align-content:center;justify-items:center;gap:calc(var(--ch)*.035);padding:calc(var(--ch)*.2) calc(var(--cw)*.08);color:var(--tinta);text-align:center;cursor:default}
@@ -185,8 +173,7 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .app[data-bajo] .mapa__etapa{padding-top:4px}
 
 /* ficha de un año */
-.ficha{position:absolute;z-index:6;width:min(250px,calc(100% - 20px));padding:12px 14px 11px;background:linear-gradient(180deg,#fbf6e8,#efe5cb);color:var(--sepia);border-radius:5px;box-shadow:var(--sombra);
-  animation:sube .28s var(--suave)}
+.ficha{position:absolute;z-index:6;width:min(250px,calc(100% - 20px));padding:12px 14px 11px;background:linear-gradient(180deg,#fbf6e8,#efe5cb);color:var(--sepia);border-radius:5px;box-shadow:var(--sombra);transform-origin:0 0}
 @keyframes sube{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .ficha h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:var(--peso) calc(1.5rem*var(--esc))/1 var(--f-tit);color:var(--tinta);padding-bottom:7px;border-bottom:1px solid rgba(43,32,21,.25);margin-bottom:6px}
 .ficha h3 small{font:italic 400 .74rem/1 var(--f-cuerpo);color:var(--sepia);opacity:.75}
@@ -249,7 +236,9 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 
 /* =============================== VISOR =============================== */
 .visor{position:absolute;inset:0;z-index:20}
-.visor__velo{position:absolute;inset:0;background:radial-gradient(90% 70% at 50% 35%,rgba(58,40,22,.9),rgba(12,8,4,.95));-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);opacity:0;transition:opacity .4s ease}
+.visor__velo{position:absolute;inset:0;background:radial-gradient(90% 70% at 50% 35%,rgba(52,35,18,.84),rgba(10,7,3,.95));opacity:0;transition:opacity .4s ease}
+.visor__velo{--tono:inherit}
+.visor__velo::after{--tono:inherit;content:"";position:absolute;inset:0;background:radial-gradient(70% 55% at 50% 38%,color-mix(in srgb,var(--tono) 40%,transparent),transparent 72%);opacity:.5}
 .visor.visible .visor__velo{opacity:1}
 .visor__rollo{position:absolute;inset:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:10px 16px 92px}
 .visor__lienzo{margin:0 auto;width:min(100%,34rem)}
@@ -268,11 +257,12 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .visor svg.ico{width:20px;height:20px;display:block}
 
 /* la hoja: portada + dos paneles que se despliegan */
-.hoja{position:relative;display:grid;margin:0 auto;perspective:1500px;color:var(--sepia);user-select:text;-webkit-user-select:text}
+.hoja{position:relative;display:grid;margin:0 auto;color:var(--sepia);user-select:text;-webkit-user-select:text}
 .hoja > .portada{box-shadow:0 2px 3px rgba(0,0,0,.4),0 20px 40px rgba(0,0,0,.5);z-index:2}
 .pliega{position:relative;padding:1.6em 1.4em 1.7em;background:linear-gradient(180deg,rgba(60,38,12,.3),rgba(60,38,12,0) 16px),var(--papel) var(--papel-img) center/cover;
-  box-shadow:0 2px 3px rgba(0,0,0,.4),0 20px 40px rgba(0,0,0,.5);transform-origin:50% 0;transform:rotateX(-86deg);opacity:0;
-  transition:transform .8s var(--suave),opacity .22s ease-out;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+  box-shadow:0 2px 3px rgba(0,0,0,.4),0 20px 40px rgba(0,0,0,.5);transform:translateY(-44%);opacity:0;
+  transition:transform .75s var(--suave),opacity .4s ease}
+.pliega.paso{z-index:1}          /* el segundo panel sale de debajo del primero, y los dos de debajo de la portada */
 .pliega::before{content:"";position:absolute;inset:.6em;border:1px solid var(--tinta);opacity:.32;pointer-events:none}
 .pliega::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,14,4,.6),rgba(24,14,4,0) 75%);transition:opacity .8s ease-out;pointer-events:none}
 .hoja.abierta .pliega{transform:none;opacity:1}
@@ -280,6 +270,16 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .hoja.abierta .importa{transition-delay:.2s}
 .hoja.abierta .importa::after{transition-delay:.2s}
 .hoja.cerrando .pliega{transition-duration:.26s,.26s;transition-delay:0s}
+/* el texto de cada panel llega por partes */
+.pliega > :not(.h-sello){opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .6s var(--suave)}
+.hoja.abierta .pliega > :not(.h-sello){opacity:1;transform:none}
+.hoja.abierta .pliega > :nth-child(1){transition-delay:.26s}.hoja.abierta .pliega > :nth-child(2){transition-delay:.32s}
+.hoja.abierta .pliega > :nth-child(3){transition-delay:.38s}.hoja.abierta .pliega > :nth-child(4){transition-delay:.44s}
+.hoja.abierta .pliega > :nth-child(5){transition-delay:.5s}.hoja.abierta .pliega > :nth-child(6){transition-delay:.56s}
+.hoja.abierta .importa > :nth-child(n){transition-delay:calc(var(--t,.38s) + .1s)}
+.hoja.abierta .importa > :nth-child(1){--t:.3s}.hoja.abierta .importa > :nth-child(2){--t:.36s}.hoja.abierta .importa > :nth-child(3){--t:.42s}
+.hoja.abierta .importa > :nth-child(4){--t:.48s}.hoja.abierta .importa > :nth-child(5){--t:.54s}.hoja.abierta .importa > :nth-child(6){--t:.6s}
+.hoja.instantanea .pliega > *,.hoja.cerrando .pliega > *{transition:none!important}
 
 .h-anio{font:var(--peso) calc(1.5em*var(--esc-p))/1.05 var(--f-tit);letter-spacing:var(--espacio);color:var(--tinta);text-wrap:balance}
 .paso .h-rotulo{margin-top:1em}
@@ -288,7 +288,7 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .h-texto{font-size:1em;line-height:1.52;text-wrap:pretty;hyphens:auto}
 .h-dato{margin-top:1.3em;padding-top:.9em;border-top:1px solid rgba(43,32,21,.3)}
 .h-dato strong{display:block;font:var(--peso) calc(3.1em*var(--esc-p))/1 var(--f-tit);letter-spacing:var(--espacio);color:var(--tinta)}
-.h-dato span{display:block;margin-top:.35em;font-size:.86em;line-height:1.3}
+.h-dato > span{display:block;margin-top:.35em;font-size:.86em;line-height:1.3}
 .h-barras{margin:.2em 0 .7em}
 .h-barras figcaption{font:italic 400 .74em/1.2 var(--f-cuerpo);opacity:.8;margin-bottom:.5em}
 .barras{display:flex;align-items:flex-end;gap:5%;height:7.2em;padding:0 2%;border-bottom:1px solid rgba(43,32,21,.6)}
@@ -312,7 +312,8 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .visor[data-modo="lado"] .hoja{grid-template-columns:var(--pw) minmax(0,1fr);align-items:start;font-size:clamp(14px,calc(var(--aw)*.019),16px)}
 .visor[data-modo="lado"] .hoja > .portada{position:sticky;top:0;grid-row:1 / span 2}
 .visor[data-modo="lado"] .pliega{grid-column:2}
-.visor[data-modo="lado"] .paso{transform-origin:0 50%;transform:rotateY(86deg);background:linear-gradient(90deg,rgba(60,38,12,.3),rgba(60,38,12,0) 16px),var(--papel) var(--papel-img) center/cover}
+.visor[data-modo="lado"] .pliega{transform:translateX(-44px)}
+.visor[data-modo="lado"] .paso{background:linear-gradient(90deg,rgba(60,38,12,.3),rgba(60,38,12,0) 16px),var(--papel) var(--papel-img) center/cover}
 .visor[data-modo="lado"] .paso::after{background:linear-gradient(90deg,rgba(24,14,4,.6),rgba(24,14,4,0) 75%)}
 .visor[data-modo="lado"] .visor__etapa{display:none}
 .visor[data-modo="lado"] .visor__nav{left:auto;right:10px;bottom:10px;transform:none;flex-direction:column}
@@ -323,15 +324,18 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .visor[data-modo="despliegue"] .paso{display:flex;flex-direction:column}
 .visor[data-modo="despliegue"] .paso .h-dato{margin-top:auto}
 .visor[data-modo="despliegue"] .hoja{grid-template-columns:repeat(3,var(--pw));justify-content:center;font-size:clamp(12.5px,calc(var(--pw)*.0365),19px)}
-.visor[data-modo="despliegue"] .pliega{height:calc(var(--pw)/.773);overflow:auto;transform-origin:0 50%;transform:rotateY(86deg);background:linear-gradient(90deg,rgba(60,38,12,.3),rgba(60,38,12,0) 16px),var(--papel) var(--papel-img) center/cover}
+.visor[data-modo="despliegue"] .pliega{height:calc(var(--pw)/.773);overflow:auto;transform:translateX(-62%);background:linear-gradient(90deg,rgba(60,38,12,.3),rgba(60,38,12,0) 16px),var(--papel) var(--papel-img) center/cover}
+.visor[data-modo="despliegue"] .importa{transform:translateX(-124%)}     /* como un tríptico que se abre */
 .visor[data-modo="despliegue"] .pliega::after{background:linear-gradient(90deg,rgba(24,14,4,.6),rgba(24,14,4,0) 75%)}
 .hoja.abierta .pliega,.visor[data-modo] .hoja.abierta .pliega{transform:none}
 
 /* ============================ PORTADA (LIBRO) ============================ */
-.tapa{position:absolute;inset:0;z-index:40;display:grid;grid-template:minmax(0,1fr) / minmax(0,1fr);place-items:center;padding:clamp(10px,3vmin,30px);perspective:1800px}
+.tapa{position:absolute;inset:0;z-index:40;display:grid;grid-template:minmax(0,1fr) / minmax(0,1fr);place-items:center;padding:clamp(10px,3vmin,30px)}
 .tapa__fondo{position:absolute;inset:0;background:radial-gradient(100% 80% at 50% 30%,#3a2a1b 0%,#18110b 70%);transition:opacity .7s ease .25s}
-.tapa__libro{container-type:size;position:relative;height:min(100%,56rem);aspect-ratio:3/4;max-width:100%;transform-origin:0 50%;transition:transform 1s cubic-bezier(.65,.02,.25,1),opacity .45s ease .5s}
-.tapa__cubierta{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2.2cqh;padding:5cqh 7cqw 4cqh calc(7cqw + 22px);text-align:center;color:#3d2a12;overflow:hidden;
+.tapa__libro{container-type:size;position:relative;height:min(100%,56rem);aspect-ratio:3/4;max-width:100%;transform-origin:0 0;--grosor:clamp(10px,4.6cqw,24px)}
+.tapa__cuerpo,.tapa__tapa{position:absolute;inset:0}
+.tapa__contra,.tapa__canto,.tapa__guarda,.tapa__primera{display:none}
+.tapa__cubierta{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:clamp(5px,1.45cqh,20px);padding:4.6cqh 7cqw 3.6cqh calc(7cqw + 22px);text-align:center;color:#3d2a12;overflow:hidden;
   background:var(--papel) url(img/papel-hoja-0.jpg) center/cover;border-radius:3px 7px 7px 3px;box-shadow:0 2px 2px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.6),inset -1px 0 0 rgba(255,255,255,.25)}
 .tapa__cubierta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:22px;background:linear-gradient(90deg,#3b1410,#6a211a 45%,#4a1712 80%,#2c0e0b);box-shadow:inset -1px 0 0 rgba(0,0,0,.4),2px 0 6px rgba(0,0,0,.25)}
 .tapa__cubierta::after{content:"";position:absolute;left:32px;right:10px;top:10px;bottom:10px;border:1px solid #6b4a1f;outline:3px double rgba(107,74,31,.55);outline-offset:-7px;opacity:.6;pointer-events:none}
@@ -343,7 +347,7 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .tapa__titulo span:first-child{font:400 clamp(2.5rem,min(19cqw,13cqh),7.4rem)/.95 'Rye',Georgia,serif;text-shadow:0 1px 0 rgba(255,250,235,.6)}
 .tapa__titulo span:last-child{margin-top:.6cqh;font:900 clamp(1.5rem,min(11cqw,7.4cqh),4.3rem)/1 'Playfair Display',Georgia,serif;color:#8f3a17;letter-spacing:.02em}
 .tapa__sub{max-width:22em;font:italic 400 clamp(.95rem,min(4.9cqw,3.3cqh),1.9rem)/1.22 'IM Fell English',Georgia,serif;color:#4a3518;text-wrap:balance}
-.tapa__chispa{width:100%;height:clamp(40px,11cqh,84px);display:block;position:relative}
+.tapa__chispa{width:100%;height:clamp(34px,9.5cqh,80px);min-height:34px;display:block;position:relative}   /* se encoge si hace falta, pero nunca a menos de 34 px */
 .tapa__indice{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;position:relative}
 .tapa__indice button{min-height:clamp(44px,6.4cqh,54px);padding:0 clamp(12px,3cqw,20px);border:1px solid var(--tinta);border-radius:999px;color:var(--tinta);background:rgba(255,252,240,.35);font:var(--peso) calc(clamp(.86rem,3.3cqw,1.2rem)*var(--esc))/1 var(--f-tit);letter-spacing:var(--espacio)}
 .tapa__abrir{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:clamp(52px,8cqh,68px);padding:0 clamp(28px,7cqw,44px);border-radius:999px;background:#6b4a1f;color:var(--hueso);font:400 clamp(1.12rem,4.4cqw,1.55rem)/1 'Rye',Georgia,serif;letter-spacing:.04em;
@@ -355,10 +359,12 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 .tapa__equipo b span{white-space:nowrap}
 .tapa__creditos{display:inline-flex;align-items:center;min-height:44px;margin-top:.2em;padding:0 12px;font:600 1em/1 var(--f-cuerpo);letter-spacing:.06em;color:#6b4a1f;text-decoration:underline;text-underline-offset:3px}
 .tapa__equipo i{display:block;margin-top:.35em;font-family:'IM Fell English',Georgia,serif}
-.tapa__acciones{display:grid;justify-items:center;gap:1.8cqh;position:relative}
+.tapa__acciones{display:grid;justify-items:center;gap:clamp(6px,1.5cqh,16px);position:relative}
+/* si falta altura, se quitan en este orden: el enlace de créditos (también está al final de la mampara),
+   las etapas (el minimapa hace lo mismo) y la gráfica chica */
+@container (max-height:860px){.tapa__creditos{display:none}}
+@container (max-height:620px){.tapa__indice{display:none}}
 @container (max-height:560px){.tapa__chispa{display:none}}
-@container (max-height:470px){.tapa__indice{display:none}}
-@container (max-height:640px){.tapa__creditos{display:none}}
 /* celular acostado: la portada se abre en dos columnas */
 @media (orientation:landscape) and (max-height:540px){
   .tapa__libro{width:min(100%,48rem);height:100%;aspect-ratio:auto}
@@ -379,9 +385,398 @@ h1,h2,h3,p,figure,ol{margin:0;padding:0}
 }
 .app[data-estado="mampara"] .tapa{pointer-events:none}
 .app[data-estado="mampara"] .tapa__fondo{opacity:0}
-.app[data-estado="mampara"] .tapa__libro{transform:rotateY(-112deg);opacity:0}
+.app[data-estado="mampara"] .tapa__libro{opacity:0}
+
+/* =====================================================================
+   LA SALA DEL MUSEO
+   Todo en plano y ligero: sólo se animan posición, tamaño y opacidad (nada de 3D,
+   desenfoques animados ni vidrio esmerilado). Nada de esto agrega información.
+   ===================================================================== */
+/* --tono no se hereda: si se heredara, su transición recalcularía el estilo de toda la página en cada cuadro.
+   Sólo lo toman, de forma explícita, los pocos elementos que lo usan. */
+@property --tono{syntax:'<color>';inherits:false;initial-value:#6b4a1f}
+.app{transition:--tono 1.6s ease}
+.visor{transition:--tono .9s ease}
+@supports (background:color-mix(in srgb,red,blue)){
+  .app{background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--tono) 24%,#2c2015) 0%,var(--muro) 62%)}
+  .mapa{background:linear-gradient(180deg,color-mix(in srgb,var(--tono) 22%,#2d2016),#1a120b)}
+}
+
+/* luz de sala y viñeta: una sola capa fija encima de la mampara y debajo del minimapa */
+.ambiente{position:absolute;grid-row:1;grid-column:1;inset:0;z-index:3;pointer-events:none}
+.ambiente__luz{position:absolute;inset:0;
+  background:radial-gradient(58% 62% at var(--lx,50%) var(--ly,14%),rgba(255,214,150,.11),rgba(255,214,150,0) 72%),
+             radial-gradient(150% 125% at 50% 42%,rgba(12,7,2,0) 56%,rgba(12,7,2,.28) 100%)}
+
+/* polvo que flota en la luz (canvas; se pausa al desplazarse, al leer y en segundo plano) */
+.polvo{position:absolute;inset:0;z-index:41;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.polvo.ver{opacity:1}
+.app.leyendo .polvo{opacity:0;transition-duration:.4s}
+
+/* mientras se lee una hoja la mampara retrocede */
+.sala{transition:transform .7s var(--suave)}
+.mapa{--tono:inherit;transition:transform .6s var(--suave),opacity .4s}
+.sala.atras{transform:scale(.96)}
+.app.leyendo .mapa{transform:translateY(18px);opacity:.35}
+
+/* sonido */
+.sonido{position:absolute;z-index:46;top:8px;right:8px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--oro);
+  background:rgba(21,16,11,.35);border:1px solid rgba(214,176,106,.5);transition:opacity .35s,transform .35s var(--suave),color .3s,background-color .3s}
+.sonido svg{width:22px;height:22px;display:block;overflow:visible}
+.sonido .onda,.sonido .tache{transition:opacity .3s}
+.sonido[aria-pressed="false"]{color:rgba(214,176,106,.72)}
+.sonido[aria-pressed="false"] .onda,.sonido[aria-pressed="true"] .tache{opacity:0}
+.sonido[aria-pressed="true"] .onda{animation:onda 3.4s ease-in-out infinite}
+.sonido[aria-pressed="true"] .onda + .onda{animation-delay:.5s}
+@keyframes onda{0%,100%{opacity:.62}50%{opacity:1}}
+@media (hover:hover){.sonido:hover{transform:scale(1.07)}}
+.app.leyendo .sonido{opacity:0;pointer-events:none;transform:scale(.85)}
+.app[data-estado="mampara"] .sonido{color:#6b4a1f;background:rgba(251,246,232,.93);border-color:rgba(107,74,31,.35);box-shadow:0 1px 2px rgba(40,22,6,.2),0 6px 16px rgba(40,22,6,.22)}
+.app[data-estado="mampara"] .sonido[aria-pressed="false"]{color:rgba(107,74,31,.7)}
+
+/* el libro se guarda en su botón del minimapa (y de ahí vuelve a salir) */
+.mapa__libro.recibe{animation:recibe .55s var(--suave)}
+@keyframes recibe{35%{transform:scale(1.2);background:rgba(214,176,106,.18)}}
+.mapa__etapa.llega{animation:llega 1s ease-out}
+@keyframes llega{0%,30%{box-shadow:inset 0 0 0 2.5px var(--oro)}100%{box-shadow:inset 0 0 0 2.5px rgba(214,176,106,0)}}
+
+/* hojas colgadas: el papel cuelga del clip y se mece; la foto se revela al llegar su etapa */
+.hoja-mini .colgante{position:absolute;inset:0;display:block;transform-origin:50% -9%}
+/* las fotos llegan con un fundido (antes aparecían de golpe al terminar de bajar) */
+.portada__marco img{opacity:0;transition:opacity .45s ease}
+.portada__marco img.lista{opacity:1}
+.portada__marco img.encima{position:absolute;left:2.4cqw;top:2.4cqw;width:calc(100% - 4.8cqw);height:calc(100% - 4.8cqw);transition:none}   /* la foto completa, mientras llega encima de la miniatura */
+.hoja-mini .portada__marco::after{content:"";position:absolute;inset:0;background:linear-gradient(170deg,#f7eedb,#ecdcbc);opacity:.94;pointer-events:none;
+  transition:opacity 1.5s ease-out calc(var(--i,0)*90ms + .55s)}
+.hoja-mini.vivo .portada__marco::after{opacity:0}
+
+/* cabeceras: el título y los dibujos llegan con su etapa */
+.cab__txt{opacity:0;transform:translateY(8px);transition:opacity .8s ease .1s,transform 1s var(--suave) .1s}
+.cab__ico svg{opacity:0;transform:translateY(-8px) rotate(-8deg);transition:opacity .7s ease .3s,transform .9s var(--suave) .3s}
+.cab__ico svg:nth-child(2){transition-delay:.42s}.cab__ico svg:nth-child(3){transition-delay:.54s}
+.periodo.vivo .cab__txt,.periodo.vivo .cab__ico svg{opacity:1;transform:none}
+
+/* hilos: al pasar por una hoja, su hilo corre hasta el dato; al volver la hoja, un pulso lo recorre */
+.hilo line,.hilo .anillo{transition:stroke-width .25s,opacity .25s,transform .35s var(--suave)}
+.hilo.ve line{stroke-width:1.9px;opacity:1;stroke-dasharray:5 4;animation:corre .9s linear infinite}
+.hilo.ve .anillo{stroke-width:2.2px;transform:scale(1.35)}
+@keyframes corre{to{stroke-dashoffset:-18}}
+.pulso-hilo{fill:none;stroke-width:2.6;stroke-linecap:round}
+
+/* minimapa: la etapa que se está viendo */
+.mapa__etapa::after{content:"";position:absolute;z-index:2;left:20%;right:20%;bottom:3px;height:2px;border-radius:2px;background:var(--tinta);opacity:0;transform:scaleX(.3);transition:opacity .4s,transform .5s var(--suave)}
+.mapa__etapa.actual::after{opacity:.85;transform:none}
+
+/* números que ruedan como en una sumadora */
+.rodillo{display:inline-flex;vertical-align:top;white-space:nowrap}
+.rodillo .r{display:inline-block;height:var(--lh,1.25em);overflow:hidden}
+.rodillo .r > span{display:block;line-height:var(--lh,1.25em);text-align:center}
+.h-dato strong .rodillo{--lh:1em}
+.solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* lupa sobre la foto del visor */
+.lupa{--ld:clamp(132px,36vmin,212px);position:absolute;z-index:4;left:0;top:0;width:var(--ld);height:var(--ld);margin:calc(var(--ld)/-2) 0 0 calc(var(--ld)/-2);border-radius:50%;pointer-events:none;
+  background:#efe4c8 no-repeat;box-shadow:0 0 0 2.5px #2c1d0c,0 0 0 7px #c9a159,0 0 0 9px #6b4e21,0 16px 36px rgba(0,0,0,.55),inset 0 0 24px rgba(30,18,6,.5);
+  opacity:0;scale:.35;transition:opacity .18s ease,scale .3s var(--suave)}
+.lupa.ver{opacity:1;scale:1}
+.lupa::after{content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(55% 42% at 32% 24%,rgba(255,255,255,.42),rgba(255,255,255,0) 62%),radial-gradient(closest-side,rgba(255,255,255,0) 80%,rgba(255,236,200,.22) 91%,rgba(20,12,4,.28) 100%)}
+.lupa::before{content:"";position:absolute;left:82%;top:82%;width:13%;height:50%;border-radius:7px;transform:rotate(-45deg);transform-origin:50% 0;
+  background:linear-gradient(90deg,#2f1d0b,#7d5427 45%,#3a250f);box-shadow:0 6px 14px rgba(0,0,0,.45)}
+.visor .portada__marco img{cursor:zoom-in}
+.visor.con-lupa .portada__marco img{cursor:none}
+.portada__lupa{position:absolute;right:2.4cqw;bottom:2.4cqw;z-index:2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--tinta);
+  background:rgba(251,246,232,.94);box-shadow:0 1px 2px rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.25);
+  opacity:0;scale:.8;transition:opacity .35s ease .45s,scale .45s var(--suave) .45s,background-color .2s,color .2s}
+.hoja.abierta .portada__lupa{opacity:1;scale:1}
+.hoja.cerrando .portada__lupa{transition-delay:0s}
+.portada__lupa svg{width:21px;height:21px;display:block}
+.portada__lupa[aria-pressed="true"]{background:var(--tinta);color:var(--hueso)}
+
+/* minimapa: lupa al recorrerlo */
+.mapa__lupa{position:absolute;z-index:8;left:50%;bottom:calc(100% + 10px);width:176px;height:72px;margin-left:-88px;border-radius:14px;overflow:hidden;pointer-events:none;background:#2d2016;
+  box-shadow:0 0 0 2px #24180c,0 0 0 4.5px var(--oro),0 0 0 6px #5a4019,0 14px 30px rgba(0,0,0,.55);
+  opacity:0;transform:translateY(10px) scale(.6);transform-origin:50% 130%;transition:opacity .16s,transform .24s var(--suave)}
+.mapa__lupa.ver{opacity:1;transform:none}
+.mapa__lupa-tira{position:absolute;left:0;top:0;height:100%;display:flex;will-change:transform}
+.mapa__lupa-tira .mapa__etapa{padding-top:8px}
+.mapa__lupa-tira .mapa__etapa span{font-size:calc(15px*var(--esc))}
+.mapa__lupa-tira .mapa__chispa{height:66%}
+.mapa__lupa-tira .mapa__chispa polyline{stroke-width:2.8}
+.mapa__lupa::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--oro);box-shadow:0 0 6px rgba(214,176,106,.8)}
+.mapa__lupa-anio{position:absolute;z-index:1;left:50%;bottom:5px;transform:translateX(-50%);padding:3px 8px;white-space:nowrap;border-radius:999px;background:rgba(21,16,11,.82);color:var(--hueso);font:700 .7rem/1 var(--f-cuerpo);letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.app[data-bajo] .mapa__lupa{height:56px}
+
+/* cambio de hoja: la que se va (una copia) y la que llega se funden */
+.hoja.fantasma{position:absolute;z-index:1;margin:0;pointer-events:none}
+.hoja.instantanea .pliega,.hoja.instantanea .pliega::after{transition:none!important}
+
+/* la tapa: grosor de las páginas y la luz que la recorre */
+.tapa__paginas{position:absolute;inset:0;border-radius:2px 6px 6px 2px;background:#efe2bf;
+  box-shadow:1px 1px 0 #d6c59b,2px 2px 0 #f0e4c4,3px 3px 0 #cbb98d,4px 4px 0 #ebdeba,5px 5px 0 #c3b083,0 30px 60px rgba(0,0,0,.6)}
+.tapa__brillo{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.tapa__brillo::before{content:"";position:absolute;inset:0;background:radial-gradient(46% 34% at var(--bx,28%) var(--by,22%),rgba(255,251,240,.26),rgba(255,251,240,0) 70%);opacity:0;transition:opacity .6s}
+.tapa:hover .tapa__brillo::before{opacity:1}
+.tapa__brillo::after{content:"";position:absolute;inset:-20%;background:linear-gradient(105deg,rgba(255,250,236,0) 40%,rgba(255,250,236,.32) 49%,rgba(255,250,236,0) 58%);transform:translateX(-85%)}
+.tapa-lista .tapa__brillo::after{animation:barrido 2.4s cubic-bezier(.4,0,.2,1) 1.5s 1 backwards}
+@keyframes barrido{from{transform:translateX(-85%)}to{transform:translateX(85%)}}
+.tapa__indice button{transform:scale(var(--m,1));transition:transform .2s ease-out}
+
+/* entrada de la portada: aparece cuando ya cargaron sus letras y se imprime pieza por pieza */
+.js:not(.llega-con-vt):not(.ya-entro) .tapa__libro{animation:aparece .8s var(--suave) backwards}
+.js:not(.tapa-lista):not(.llega-con-vt) .tapa__cubierta > :not(.tapa__brillo),
+.js:not(.tapa-lista):not(.llega-con-vt) .sonido{opacity:0;pointer-events:none}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__logos{animation:imprime .7s var(--suave) .12s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__ante{animation:imprime .7s var(--suave) .22s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__titulo span:first-child{animation:sello .7s cubic-bezier(.2,.8,.3,1.15) .32s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__titulo span:last-child{animation:imprime .7s var(--suave) .5s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__sub{animation:imprime .7s var(--suave) .62s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__chispa{animation:traza 1.2s cubic-bezier(.45,0,.2,1) .75s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__abrir{animation:imprime .7s var(--suave) .95s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__indice li{animation:imprime .55s var(--suave) 1.05s backwards}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__indice li:nth-child(2){animation-delay:1.11s}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__indice li:nth-child(3){animation-delay:1.17s}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__indice li:nth-child(4){animation-delay:1.23s}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__indice li:nth-child(5){animation-delay:1.29s}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .tapa__equipo{animation:imprime .7s var(--suave) 1.25s backwards}
+@keyframes aparece{from{opacity:0;transform:translateY(16px)}}
+@keyframes imprime{from{opacity:0;transform:translateY(8px)}}
+@keyframes sello{from{opacity:0;transform:scale(1.14)}60%{opacity:1}}
+@keyframes traza{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* fin del recorrido: el año final se estampa al llegar */
+.cedula--fin h2{display:inline-block}
+.cedula--fin.vista h2{animation:sello .8s cubic-bezier(.2,.8,.3,1.15) both}
+
+/* transición entre documentos: el ícono de la tarjeta del semestre se vuelve este libro
+   (la activación va en línea, en index.html) */
+.tapa__libro{view-transition-name:libro}
+::view-transition-group(libro){animation-duration:.75s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
+
+/* =====================================================================
+   LAS PIEZAS: el artefacto de cada hoja y los juguetes de cada zona
+   ===================================================================== */
+.artefacto{position:relative;margin-top:1.25em;padding:.8em .85em .85em;color:var(--tinta);background:rgba(255,252,240,.5);border-radius:4px}
+.artefacto::before{content:"";position:absolute;inset:0;border:1px solid var(--tinta);border-radius:4px;opacity:.42;pointer-events:none}
+.art__guia{display:flex;align-items:center;gap:.55em;margin:0 0 .55em;font:700 .66em/1.3 var(--f-cuerpo);letter-spacing:.12em;text-transform:uppercase;min-height:2.6em}
+.art__guia svg{width:1.8em;height:1.8em;flex:none}
+.art__escena{position:relative;-webkit-user-select:none;user-select:none;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.art__escena > svg{display:block;width:100%;height:auto;overflow:visible}
+.art__escena text{font-family:var(--f-cuerpo)}
+.art__escena text:not([fill]){fill:currentColor}
+.art__escena .tit{font-family:var(--f-tit);font-weight:var(--peso)}
+.art__escena .mov{transform-box:fill-box;transform-origin:center}
+.art__rango{display:block;width:100%;height:44px;margin:.15em 0 0;accent-color:var(--tinta);cursor:pointer}
+.art__dato{display:flex;align-items:baseline;flex-wrap:wrap;gap:.15em .55em;margin-top:.55em;padding-top:.6em;border-top:1px solid rgba(43,32,21,.25)}
+.art__dato strong{font:var(--peso) calc(2.7em*var(--esc-p))/1 var(--f-tit);letter-spacing:var(--espacio);color:var(--tinta)}
+.art__dato strong .rodillo{--lh:1em}
+.art__dato > span:not(.solo-lector){font-size:.86em;line-height:1.3;color:var(--sepia)}
+.art__dato[data-estado="oculto"] strong{opacity:.32;letter-spacing:.12em}
+.art__botones{display:flex;flex-wrap:wrap;gap:.5em;margin-top:.65em}
+.art__accion{min-height:44px;padding:0 1.15em;border-radius:999px;background:var(--tinta);color:var(--hueso);font:700 .8em/1.15 var(--f-cuerpo);letter-spacing:.04em;box-shadow:0 2px 0 rgba(0,0,0,.28);transition:transform .12s,box-shadow .12s}
+.art__accion:active{transform:translateY(2px);box-shadow:none}
+.art__otra{min-height:44px;padding:0 1em;border-radius:999px;border:1px solid var(--tinta);color:var(--tinta);font:600 .76em/1 var(--f-cuerpo)}
+.visor[data-modo="despliegue"] .paso .artefacto{margin-top:auto}
+
+/* juguetes: los dibujos de cada zona responden al tocarlos (las armas, la cruz y las manchas no) */
+.juguete{cursor:pointer;pointer-events:visiblePainted;transform-box:fill-box;transform-origin:center}
+.juguete .toque{pointer-events:all}
+.juguete[data-juguete="trigo"]{transform-origin:50% 100%}
+.cab__ico svg.juega{pointer-events:auto;cursor:pointer}
+@media (hover:hover){.juguete:hover,.cab__ico svg.juega:hover{opacity:.82}}
+
+/* las hojas ya jugadas llevan un sello de «vista» en su esquina */
+.hoja-mini.hecha .colgante::before{content:"";position:absolute;z-index:3;right:-6%;top:4%;width:26%;aspect-ratio:1;border-radius:50%;border:2px solid var(--tinta);background:rgba(255,250,236,.94);transform:rotate(-12deg);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.hoja-mini.hecha .colgante::after{content:"";position:absolute;z-index:4;right:3.5%;top:7.2%;width:6.5%;height:10%;border:solid var(--tinta);border-width:0 2.5px 2.5px 0;transform:rotate(40deg)}
+.hoja-mini.recien .colgante::before,.hoja-mini.recien .colgante::after{animation:estampa .6s cubic-bezier(.2,.8,.3,1.2) both}
+@keyframes estampa{from{opacity:0;scale:1.8}}
+
+/* =====================================================================
+   LA ESCENOGRAFÍA DE CADA ETAPA (fondos.js)
+   el paisaje grabado al pie de la gráfica, lo que se mueve encima, y las escenas detrás de la hoja y de la portada
+   ===================================================================== */
+.escenarios{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.escena{position:absolute;top:0;bottom:0;overflow:hidden;color:var(--tinta)}
+.esc-paisaje{position:absolute;left:0;display:block;overflow:visible;opacity:.13}   /* fijo, sin transición: no se repinta */
+.esc-vivos{position:absolute;inset:0}
+/* lo que se mueve no se quita ni se reinicia (eso parpadeaba): fuera de pantalla, al leer y detrás de la portada sólo se pausa */
+.escena:not(.en-vista) .esc-vivos{visibility:hidden}
+.escena:not(.en-vista) .esc-vivos *,.app.leyendo .esc-vivos *,.app[data-estado="portada"] .esc-vivos *{animation-play-state:paused!important}
+.esc{position:absolute;color:var(--tinta)}
+.escena[data-k]{color:var(--tinta)}
+/* el tren que pasa, con su humo */
+.esc-tren{opacity:.22;animation:esc-pasa var(--dur,30s) linear infinite}
+.esc-tren svg{display:block}
+@keyframes esc-pasa{from{transform:translateX(-170px)}to{transform:translateX(calc(var(--w) + 20px))}}
+.esc-humos{position:absolute;left:12px;top:-6px}
+.esc-humos i{position:absolute;width:10px;height:10px;border-radius:50%;background:currentColor;opacity:0;animation:esc-humo 2.6s ease-out infinite}
+.esc-humos i:nth-child(2){animation-delay:.85s}.esc-humos i:nth-child(3){animation-delay:1.7s}
+@keyframes esc-humo{0%{transform:translate(0,0) scale(.5);opacity:.55}100%{transform:translate(-20px,-42px) scale(2.8);opacity:0}}
+.esc-chimenea{opacity:.4}
+/* lo que cae: bilimbiques, monedas, la cinta del teletipo */
+.esc-cae{top:0;opacity:0;animation:esc-cae var(--dur,18s) linear var(--del,0s) infinite}
+@keyframes esc-cae{0%{transform:translateY(var(--y0));opacity:0}8%{opacity:.24}85%{opacity:.24}100%{transform:translateY(var(--y1));opacity:0}}
+.esc-meneo{animation:esc-meneo 3.4s ease-in-out infinite alternate}
+.esc-meneo svg{display:block}
+@keyframes esc-meneo{from{transform:translateX(-12px) rotate(-24deg)}to{transform:translateX(12px) rotate(22deg)}}
+.esc-moneda{width:14px;height:14px;border-radius:50%;background:currentColor;animation:esc-gira 2.6s ease-in-out infinite}
+@keyframes esc-gira{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.42)}}   /* gira sin volverse una raya (eso se veía como un parpadeo) */
+.esc-cinta{width:3px;border-radius:2px;background:currentColor}
+/* el radio que transmite y las letras que suben */
+.esc-ondas{width:0;height:0}
+.esc-ondas i{position:absolute;left:-14px;top:-14px;width:28px;height:28px;border:1.5px solid currentColor;border-radius:50%;opacity:0;animation:esc-onda 3.6s ease-out infinite}
+.esc-ondas i:nth-child(2){animation-delay:1.2s}.esc-ondas i:nth-child(3){animation-delay:2.4s}
+@keyframes esc-onda{0%{transform:scale(.3);opacity:.5}100%{transform:scale(3.6);opacity:0}}
+.esc-letra{font:900 26px/1 'Playfair Display',Georgia,serif;opacity:0;animation:esc-sube 15s linear var(--del,0s) infinite}
+@keyframes esc-sube{0%{transform:translateY(0);opacity:0}15%,80%{opacity:.2}100%{transform:translateY(calc(var(--sube) * -1));opacity:0}}
+/* la carretera, el petróleo que gotea y el trigo que se mece */
+.esc-camino{overflow:visible;opacity:.34}
+.esc-camino path{fill:none;stroke:currentColor;stroke-width:2.2;stroke-dasharray:9 13;animation:esc-camino 1.8s linear infinite}
+@keyframes esc-camino{to{stroke-dashoffset:-44}}
+.esc-gota{width:5px;height:7px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:currentColor;opacity:0;animation:esc-gota 4.2s cubic-bezier(.5,0,.8,.6) var(--del,0s) infinite}
+@keyframes esc-gota{0%{transform:translateY(0) scale(.4);opacity:0}25%{transform:translateY(0) scale(1);opacity:.42}100%{transform:translateY(var(--caida));opacity:0}}
+.esc-trigo{overflow:visible;opacity:.3}
+.esc-trigo g{transform-box:fill-box;transform-origin:50% 100%;animation:esc-mece 3.8s ease-in-out var(--del,0s) infinite alternate}
+@keyframes esc-mece{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+/* escena detrás de la hoja abierta y panorama de la portada (canvas) */
+.visor__escena,.tapa__escena{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:block}
+.visor__escena{opacity:0;transition:opacity .7s ease}
+.visor.visible .visor__escena{opacity:1}
+.tapa__escena{opacity:0;transition:opacity 1.4s ease}
+.tapa__escena.lista{opacity:1}
+
+/* =====================================================================
+   LOS TRES MODOS: lite (carga rápido), normal (como siempre) e inmersivo (3D)
+   El modo vive en <html data-modo="…">; lo decide la cabeza de index.html antes de pintar.
+   ===================================================================== */
+/* el selector: en la portada (debajo de «Abrir el libro») y en el menú del minimapa */
+.modos{display:flex;justify-content:center}
+.modos--tapa{gap:0;padding:3px;border-radius:999px;border:1px solid rgba(107,74,31,.45);background:rgba(255,252,240,.4)}
+.modos--tapa button{min-height:44px;min-width:clamp(64px,19cqw,96px);padding:0 clamp(10px,2.6cqw,16px);border-radius:999px;color:#6b4a1f;font:600 clamp(.74rem,2.9cqw,.92rem)/1 var(--f-cuerpo);letter-spacing:.06em;transition:background-color .25s,color .25s}
+.modos--tapa button[aria-pressed="true"]{background:#6b4a1f;color:var(--hueso);box-shadow:0 1px 0 #3d2a12}
+.mapa__modo{flex:none;width:44px;min-height:44px;border-radius:8px;display:grid;place-items:center;color:var(--oro);border:1px solid rgba(214,176,106,.4)}
+.mapa__modo svg{width:22px;height:22px;display:block}
+.mapa__modo[aria-expanded="true"]{background:rgba(214,176,106,.16)}
+.app[data-bajo] .mapa__modo{min-height:34px}
+.menu-modo{position:absolute;z-index:8;right:10px;bottom:calc(var(--alto-mapa,58px) + 10px);width:min(300px,calc(100% - 20px));padding:12px;border-radius:10px;background:linear-gradient(180deg,#fbf6e8,#efe5cb);color:var(--sepia);
+  box-shadow:0 2px 3px rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.5);transform-origin:calc(100% - 22px) 100%;animation:menu-sale .26s var(--suave)}
+@keyframes menu-sale{from{opacity:0;transform:translateY(8px) scale(.94)}}
+.menu-modo__tit{margin:0 4px 8px;font:700 .68rem/1 var(--f-cuerpo);letter-spacing:.18em;text-transform:uppercase;color:#6b4a1f}
+.modos--menu{flex-direction:column;gap:4px}
+.modos--menu button{display:grid;gap:3px;min-height:52px;padding:8px 12px 8px 36px;border-radius:8px;text-align:left;position:relative}
+.modos--menu button b{font:700 .92rem/1.1 var(--f-cuerpo);color:#3d2a12}
+.modos--menu button span{font-size:.76rem;line-height:1.25;opacity:.8}
+.modos--menu button::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;border:1.5px solid #6b4a1f}
+.modos--menu button[aria-pressed="true"]{background:rgba(107,74,31,.12)}
+.modos--menu button[aria-pressed="true"]::before{background:#6b4a1f;box-shadow:inset 0 0 0 3px #f6efdc}
+@container (max-height:470px){.modos--tapa{display:none}}
+/* celular acostado: la portada va en dos columnas y a la derecha caben el modo y las etapas (si no es muy bajo) */
+@media (orientation:landscape) and (max-height:540px){
+  .modos--tapa{display:flex}
+  .modos--tapa button{min-width:0;padding:0 12px;font-size:.74rem}
+  .tapa__indice{display:flex}
+}
+@media (orientation:landscape) and (max-height:380px){.tapa__indice{display:none}}
+/* pantallas anchas (tableta acostada, laptop, escritorio): el modo va fuera del libro, arriba a la izquierda */
+.modos--suelto{display:none;position:absolute;z-index:3;top:10px;left:12px;align-items:center;gap:2px;padding:3px 3px 3px 12px;border-radius:999px;
+  background:rgba(21,16,11,.55);border:1px solid rgba(214,176,106,.4);color:var(--oro)}
+.modos__tit{margin-right:6px;font:700 .64rem/1 var(--f-cuerpo);letter-spacing:.18em;text-transform:uppercase;opacity:.8}
+.modos--suelto button{min-height:44px;padding:0 14px;border-radius:999px;color:var(--hueso-2);font:600 .8rem/1 var(--f-cuerpo);letter-spacing:.05em;transition:background-color .25s,color .25s}
+.modos--suelto button[aria-pressed="true"]{background:var(--oro);color:#21170d}
+@media (hover:hover){.modos--suelto button:not([aria-pressed="true"]):hover{color:var(--oro)}}
+@media (orientation:landscape) and (min-height:541px),(orientation:portrait) and (min-height:1020px) and (min-width:700px){
+  .modos--suelto{display:flex}.modos--tapa{display:none}
+  @container (min-height:600px){.tapa__indice{display:flex}}      /* con el modo fuera del libro, las etapas sí caben */
+}
+.js:not(.tapa-lista):not(.llega-con-vt) .modos--suelto{opacity:0}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .modos--suelto{animation:imprime .6s var(--suave) 1.1s backwards}
+.app[data-estado="mampara"] .modos--suelto{opacity:0;pointer-events:none;transition:opacity .3s}
+.tapa-lista:not(.llega-con-vt):not(.ya-entro) .modos--tapa{animation:imprime .6s var(--suave) 1.02s backwards}
+
+/* ---------- LITE: lo esencial, ligero y sin nada corriendo de fondo ---------- */
+[data-modo="lite"] .escenarios,[data-modo="lite"] .polvo,[data-modo="lite"] .visor__escena,[data-modo="lite"] .tapa__escena,
+[data-modo="lite"] .franja__papel,[data-modo="lite"] .tapa__brillo{display:none}
+[data-modo="lite"] [data-k]{--papel-img:none}
+[data-modo="lite"] .tapa__cubierta,[data-modo="lite"] .panel__hoja{background-image:linear-gradient(170deg,#f4e6c4,#e9d6a8)}
+[data-modo="lite"] .ambiente__luz{background:radial-gradient(150% 125% at 50% 42%,rgba(12,7,2,0) 56%,rgba(12,7,2,.28) 100%)}
+[data-modo="lite"] .sala{transition-duration:.35s}
+[data-modo="lite"] .sala.atras{transform:none}
+[data-modo="lite"] .sonido[aria-pressed="true"] .onda{animation:none}
+
+/* ---------- INMERSIVO: 3D, profundidad y más movimiento ----------
+   Sólo se animan transformaciones y opacidad; las capas 3D existen mientras algo se mueve. */
+/* el libro de la portada tiene grosor, se inclina con el dedo, el ratón o el celular, y al abrirse la tapa gira sobre el lomo */
+[data-modo="inmersivo"] .tapa{perspective:1500px;perspective-origin:50% 40%}
+[data-modo="inmersivo"] .tapa__libro,[data-modo="inmersivo"] .tapa__cuerpo,[data-modo="inmersivo"] .tapa__tapa{transform-style:preserve-3d}
+[data-modo="inmersivo"] .tapa__tapa{transform-origin:0 50%}
+[data-modo="inmersivo"] .tapa__cubierta{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+/* la guarda (el reverso de la tapa): papel jaspeado en ondas con las tintas de las cinco etapas */
+[data-modo="inmersivo"] .tapa__guarda{display:block;position:absolute;inset:0;border-radius:7px 3px 3px 7px;transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:linear-gradient(90deg,rgba(30,14,4,.4),rgba(30,14,4,0) 14%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='50' viewBox='0 0 96 50'%3E%3Crect width='96' height='50' fill='%23e6d3a6'/%3E%3Cg fill='none' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M-4 5q12-6 24 0t24 0 24 0 24 0 24 0' stroke='%236b4a1f'/%3E%3Cpath d='M-4 15q12 6 24 0t24 0 24 0 24 0 24 0' stroke='%238f3a17'/%3E%3Cpath d='M-4 25q12-6 24 0t24 0 24 0 24 0 24 0' stroke='%231f4d39'/%3E%3Cpath d='M-4 35q12 6 24 0t24 0 24 0 24 0 24 0' stroke='%233f4853'/%3E%3Cpath d='M-4 45q12-6 24 0t24 0 24 0 24 0 24 0' stroke='%231a1208'/%3E%3C/g%3E%3C/svg%3E") 0 0/48px 25px;
+  box-shadow:inset 0 0 0 7px #4a1712,inset 0 0 0 8px rgba(214,176,106,.6)}
+[data-modo="inmersivo"] .tapa__paginas{box-shadow:none;transform:translateZ(-1.5px)}
+[data-modo="inmersivo"] .tapa__primera{display:grid;position:absolute;inset:0;place-content:center;justify-items:center;gap:2.2cqh;border-radius:2px 6px 6px 2px;
+  background:#f3e8cb url(img/papel-hoja-0.jpg) center/cover;color:#6b4a1f;box-shadow:inset 18px 0 22px -14px rgba(60,38,12,.45)}
+[data-modo="inmersivo"] .tapa__primera span:first-child{font:400 clamp(1.6rem,12cqw,4.4rem)/1 'Rye',Georgia,serif}
+[data-modo="inmersivo"] .tapa__primera span:last-child{font:900 clamp(1rem,7cqw,2.6rem)/1 'Playfair Display',Georgia,serif;color:#8f3a17}
+[data-modo="inmersivo"] .tapa__primera i{width:40cqw;height:1px;background:#6b4a1f;opacity:.5}
+[data-modo="inmersivo"] .tapa__contra{display:block;position:absolute;inset:0;border-radius:3px 7px 7px 3px;transform:translateZ(calc(var(--grosor) * -1));background:linear-gradient(90deg,#3b1410,#5a1d16 30%,#4a1712);box-shadow:0 30px 60px rgba(0,0,0,.55)}
+[data-modo="inmersivo"] .tapa__canto{display:block;position:absolute;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+[data-modo="inmersivo"] .tapa__canto--der{top:.7%;bottom:.7%;right:3px;width:var(--grosor);transform-origin:100% 50%;transform:rotateY(90deg);
+  background:repeating-linear-gradient(90deg,#efe2bf 0 1.5px,#d9c597 1.5px 2.5px),#e7d8b0}
+[data-modo="inmersivo"] .tapa__canto--arr{top:3px;left:22px;right:3px;height:var(--grosor);transform-origin:50% 0;transform:rotateX(-90deg);
+  background:repeating-linear-gradient(180deg,#efe2bf 0 1.5px,#d9c597 1.5px 2.5px),#e7d8b0}
+[data-modo="inmersivo"] .tapa__canto--aba{bottom:3px;left:22px;right:3px;height:var(--grosor);transform-origin:50% 100%;transform:rotateX(90deg);
+  background:repeating-linear-gradient(180deg,#efe2bf 0 1.5px,#d9c597 1.5px 2.5px),#e7d8b0}
+[data-modo="inmersivo"] .tapa__canto--lomo{top:0;bottom:0;left:0;width:var(--grosor);transform-origin:0 50%;transform:rotateY(-90deg);border-radius:3px 0 0 3px;
+  background:linear-gradient(90deg,#2c0e0b,#6a211a 35%,#7a2a20 50%,#4a1712)}
+[data-modo="inmersivo"] .tapa__fondo::after{content:"";position:absolute;left:50%;top:50%;width:min(80vw,620px);height:12%;margin:min(38vh,25rem) 0 0 calc(min(80vw,620px)/-2);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.5),rgba(0,0,0,0));pointer-events:none}
+
+/* la mampara: las cabeceras giran como letreros al llegar su etapa y las hojas caen desde el frente */
+[data-modo="inmersivo"] .cab__txt{transform:perspective(520px) rotateX(-78deg);transform-origin:50% 100%}
+[data-modo="inmersivo"] .cab__ico svg{transform:perspective(400px) rotateY(80deg)}
+[data-modo="inmersivo"] .hoja-mini{transform:perspective(700px) translate3d(0,-26px,120px) rotateX(26deg) rotate(var(--rot)) scale(.9);transition-duration:.9s,.45s}
+[data-modo="inmersivo"] .hoja-mini.vivo{transform:rotate(var(--rot))}
+@media (hover:hover){[data-modo="inmersivo"] .hoja-mini:not(.pendiente):hover .portada{transform:perspective(520px) rotateX(7deg) rotateY(-9deg) translateZ(18px) scale(1.03);box-shadow:-6px 14px 22px rgba(40,22,6,.42)}}
+[data-modo="inmersivo"] .sala{transition:transform .8s var(--suave)}
+[data-modo="inmersivo"] .sala.atras{transform:perspective(1200px) translateZ(-170px) rotateX(4deg)}
+[data-modo="inmersivo"] .escena,[data-modo="inmersivo"] .esc-paisaje{overflow:visible}
+
+/* el visor: la hoja se despliega de verdad, como papel doblado que se abre sobre sus bisagras */
+[data-modo="inmersivo"] .pliega{opacity:1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform 1s cubic-bezier(.2,.85,.25,1.06),opacity .3s ease}
+/* (las mismas funciones en el mismo orden en los dos estados: así la transición gira sobre la bisagra) */
+[data-modo="inmersivo"] .visor[data-modo="pila"] .pliega{transform-origin:50% 0;transform:perspective(1300px) rotateX(-100deg) rotateY(0)}
+[data-modo="inmersivo"] .visor[data-modo="lado"] .pliega{transform-origin:0 50%;transform:perspective(1300px) rotateX(0) rotateY(100deg)}
+[data-modo="inmersivo"] .visor[data-modo="despliegue"] .pliega{transform-origin:0 50%;transform:perspective(1300px) rotateX(0) rotateY(-178deg)}   /* tríptico: cada panel doblado sobre el anterior */
+[data-modo="inmersivo"] .visor[data-modo] .hoja.abierta .pliega{transform:perspective(1300px) rotateX(0) rotateY(0)}
+[data-modo="inmersivo"] .hoja.abierta .importa{transition-delay:.32s}
+[data-modo="inmersivo"] .hoja.cerrando .pliega{transition-duration:.34s,.2s;transition-timing-function:cubic-bezier(.5,0,.75,0),ease}
+[data-modo="inmersivo"] .visor__escena{will-change:transform}
+/* profundidad al desplazarse, sin JavaScript (corre aparte del hilo principal donde el navegador lo permite):
+   el paisaje de cada etapa va más lento que la gráfica, y las hojas giran un poco hacia el centro, como en una sala curva */
+@supports (animation-timeline:view()){
+  [data-modo="inmersivo"] .esc-paisaje{animation:prof-lejos linear both;animation-timeline:view(inline)}
+  [data-modo="inmersivo"] .esc-vivos{animation:prof-medio linear both;animation-timeline:view(inline)}
+  @keyframes prof-lejos{from{transform:translateX(calc(var(--vw,400px) * -.1))}to{transform:translateX(calc(var(--vw,400px) * .1))}}
+  @keyframes prof-medio{from{transform:translateX(calc(var(--vw,400px) * -.045))}to{transform:translateX(calc(var(--vw,400px) * .045))}}
+  [data-modo="inmersivo"] .hoja-mini .colgante{perspective:640px}
+  [data-modo="inmersivo"] .hoja-mini .portada{animation:sala-curva linear both;animation-timeline:view(inline)}
+  [data-modo="inmersivo"] .hoja-mini.asienta .portada{animation:asienta .5s var(--suave),sala-curva linear both;animation-timeline:auto,view(inline)}
+  @keyframes sala-curva{from{rotate:y -17deg}to{rotate:y 17deg}}
+  [data-modo="inmersivo"] .visor{timeline-scope:--rollo}
+  [data-modo="inmersivo"] .visor__rollo{scroll-timeline:--rollo y}
+  [data-modo="inmersivo"] .visor__escena{animation:prof-rollo linear both;animation-timeline:--rollo}
+  @keyframes prof-rollo{from{transform:translateY(0) scale(1.08)}to{transform:translateY(-5%) scale(1.08)}}
+}
 
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important}
-  .app[data-estado="mampara"] .tapa__libro{transform:none}
+  *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important;animation-delay:0s!important}
+  .cab__txt,.cab__ico svg{transform:none}
+  .sala.atras{transform:none}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+  .escenarios{display:none}
+  /* inmersivo con movimiento reducido: el 3D se queda quieto (sin profundidad al desplazarse) */
+  [data-modo="inmersivo"] .esc-paisaje,[data-modo="inmersivo"] .esc-vivos,[data-modo="inmersivo"] .hoja-mini .portada,[data-modo="inmersivo"] .visor__escena{animation:none!important}
 }

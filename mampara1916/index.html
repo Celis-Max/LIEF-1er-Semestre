@@ -11,12 +11,71 @@
 <meta name="apple-mobile-web-app-title" content="Mampara 1916">
 <title>Mampara 1916 · México 1916–1940</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="img/iconos/icono-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/iconos/icono-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="img/iconos/icono-64.png">
 <link rel="apple-touch-icon" href="img/iconos/apple-touch-icon-180.png">
-<link rel="preload" as="image" href="img/papel-franja.jpg">
+<!-- las letras de la portada se piden de inmediato: la portada no se imprime hasta tenerlas (su papel lo pide la cabeza, fuera de lite) -->
+<link rel="preload" as="font" type="font/woff2" href="fuentes/rye.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/playfair-900.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/fell-italica.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/lora-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/lora-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/lora-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/limelight.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/special-elite.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fuentes/bebas-neue.woff2" crossorigin>
+<!-- en línea: la transición desde la portada del semestre (Chrome la decide antes de leer estilos.css), el color de fondo
+     (sin destello blanco al cargar) y las tipografías (así la cabeza puede esperarlas desde el principio) -->
+<style>@view-transition{navigation:auto}html{background:#15100b}
+@font-face{font-family:'Rye';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/rye.woff2) format('woff2')}
+@font-face{font-family:'IM Fell English';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/fell.woff2) format('woff2')}
+@font-face{font-family:'IM Fell English';font-weight:400;font-style:italic;font-display:swap;src:url(fuentes/fell-italica.woff2) format('woff2')}
+@font-face{font-family:'Playfair Display';font-weight:900;font-style:normal;font-display:swap;src:url(fuentes/playfair-900.woff2) format('woff2')}
+@font-face{font-family:'Playfair Display';font-weight:700;font-style:italic;font-display:swap;src:url(fuentes/playfair-700-italica.woff2) format('woff2')}
+@font-face{font-family:'Limelight';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/limelight.woff2) format('woff2')}
+@font-face{font-family:'Special Elite';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/special-elite.woff2) format('woff2')}
+@font-face{font-family:'Bebas Neue';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/bebas-neue.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;font-display:swap;src:url(fuentes/lora-400.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:400;font-style:italic;font-display:swap;src:url(fuentes/lora-400-italica.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:600;font-style:normal;font-display:swap;src:url(fuentes/lora-600.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:700;font-style:normal;font-display:swap;src:url(fuentes/lora-700.woff2) format('woff2')}
+</style>
+<script>
+/* el modo de la app: «lite» (carga rápido), «normal» o «inmersivo» (3D). Se recuerda; la primera vez,
+   los equipos modestos o las conexiones lentas empiezan en «lite». Se decide antes de pintar nada. */
+(function(){
+  var d = document.documentElement, m = null;
+  try { m = localStorage.getItem('mampara-modo'); } catch (e){}
+  if (m !== 'lite' && m !== 'normal' && m !== 'inmersivo'){
+    var c = navigator.connection || {}, t = c.effectiveType || '';
+    m = (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || c.saveData ||
+        t === 'slow-2g' || t === '2g' || (t === '3g' && c.downlink > 0 && c.downlink < 1) ? 'lite' : 'normal';
+    d.setAttribute('data-modo-auto', '');
+  }
+  d.setAttribute('data-modo', m);
+  d.classList.add('js');
+  if (m !== 'lite' && !location.hash){ var l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = 'img/papel-hoja-0.jpg'; document.head.appendChild(l); }
+})();
+/* la portada se imprime en cuanto están sus letras (a lo más 3.5 s), sin esperar al resto: así nada cambia de tipografía
+   ni brinca. Si se llega desde la portada del semestre, la transición es la entrada. app.js escucha «tapaimpresa». */
+(function(){
+  var d = document.documentElement, hecho = false;
+  function imprime(){
+    if (hecho) return; hecho = true;
+    d.classList.add('tapa-lista'); window.tapaImpresa = true; document.dispatchEvent(new Event('tapaimpresa'));
+    setTimeout(function(){ d.classList.add('ya-entro'); }, 2300);
+  }
+  addEventListener('pagereveal', function(e){ if (e.viewTransition){ d.classList.add('llega-con-vt'); imprime(); } });
+  var f = document.fonts, letras = ['1em Rye', '900 1em "Playfair Display"', 'italic 1em "IM Fell English"', '400 1em Lora', '600 1em Lora', '700 1em Lora', '1em Limelight', '1em "Special Elite"', '1em "Bebas Neue"'];
+  if (!f || !f.load || !window.Promise){ addEventListener('DOMContentLoaded', imprime); return; }
+  Promise.race([Promise.all(letras.map(function(x){ return f.load(x); })), new Promise(function(r){ setTimeout(r, 3500); })]).then(imprime, imprime);
+})();
+</script>
 <link rel="stylesheet" href="estilos.css">
 <script src="datos.js" defer></script>
+<script src="sonido.js" defer></script>
 <script src="app.js" defer></script>
+<!-- piezas.js, fondos.js e inmersivo.js los pide app.js cuando hacen falta (según el modo) -->
 </head>
 <body>
 <div class="app" id="app" lang="es-MX" data-estado="portada">
@@ -25,7 +84,7 @@
   <main class="sala" id="sala" aria-label="Mampara: línea de tiempo de 1916 a 1940. Desliza hacia los lados.">
     <div class="recorrido">
       <aside class="cedula" id="cedula">
-        <div class="cedula__logos"><img src="img/logo-uaeh.svg" alt="UAEH"><img src="img/logo-apan.svg" alt="Escuela Superior de Apan"></div>
+        <div class="cedula__logos"><img src="img/logo-uaeh.webp" alt="UAEH" width="57" height="26"><img src="img/logo-apan.webp" alt="Escuela Superior de Apan" width="63" height="26"></div>
         <h2>Cómo leer la mampara</h2>
         <p class="cedula__sub">México, 1916–1940 · PIB y deuda externa</p>
         <div class="cedula__regla"></div>
@@ -41,8 +100,9 @@
       </aside>
 
       <div class="franja" id="franja">
-        <img class="franja__papel" src="img/papel-franja.jpg" alt="" decoding="async" draggable="false">
+        <img class="franja__papel" data-src="img/papel-franja.webp" alt="" decoding="async" draggable="false">
         <div class="periodos" id="periodos"></div>
+        <div class="escenarios" id="escenarios" aria-hidden="true"></div>
         <svg class="lienzo" id="lienzo" aria-hidden="true"></svg>
         <div class="columna" id="columna" hidden></div>
         <div class="colgadas" id="colgadas"></div>
@@ -58,15 +118,38 @@
     </div>
   </main>
 
+  <!-- ============ AMBIENTE: luz de sala, viñeta y grano (sólo decoración) ============ -->
+  <div class="ambiente" aria-hidden="true"><div class="ambiente__luz" id="luz"></div></div>
+
   <!-- ============ MINIMAPA ============ -->
   <nav class="mapa" id="mapa" aria-label="Etapas">
     <button class="mapa__libro" id="aPortada" type="button" aria-label="Volver a la portada del libro">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 6.5C10 4.8 7 4.5 3.5 5v13c3.5-.5 6.5-.2 8.5 1.5 2-1.7 5-2 8.5-1.5V5C17 4.5 14 4.8 12 6.5zM12 6.5v13"/></svg>
     </button>
     <div class="mapa__tira" id="tira"></div>
+    <button class="mapa__modo" id="modoBoton" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menuModo"><span class="modo-ico" aria-hidden="true"></span><span class="solo-lector">Modo de la app</span></button>
+    <div class="mapa__lupa" id="lupaMapa" aria-hidden="true"><div class="mapa__lupa-tira" id="lupaTira"></div><span class="mapa__lupa-anio" id="lupaAnio"></span></div>
   </nav>
 
+  <!-- sonido: gramófono de la sala (se recuerda la preferencia) -->
+  <button class="sonido" id="sonido" type="button" data-sonido aria-pressed="true" aria-label="Silenciar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3.5 9.5h3l5-4v13l-5-4h-3z" fill="currentColor" fill-opacity=".18"/>
+      <path class="onda" d="M15 9.2a4 4 0 0 1 0 5.6"/><path class="onda" d="M17.6 6.6a7.6 7.6 0 0 1 0 10.8"/>
+      <path class="tache" d="M15.5 9.5l5 5M20.5 9.5l-5 5"/>
+    </svg>
+  </button>
+
   <div class="ficha" id="ficha" hidden></div>
+  <!-- modo de la app (desde el minimapa) -->
+  <div class="menu-modo" id="menuModo" role="dialog" aria-label="Modo de la app" hidden>
+    <p class="menu-modo__tit">Modo</p>
+    <div class="modos modos--menu" role="group" aria-label="Modo de la app">
+      <button type="button" data-modo="inmersivo" aria-pressed="false"><b>Inmersivo</b><span>3D, profundidad y más movimiento</span></button>
+      <button type="button" data-modo="normal" aria-pressed="false"><b>Normal</b><span>La mampara animada, como siempre</span></button>
+      <button type="button" data-modo="lite" aria-pressed="false"><b>Lite</b><span>Carga rápido: sin fondos animados ni música</span></button>
+    </div>
+  </div>
   <!-- aviso para instalar (sólo en la versión instalable) -->
   <div class="instala" id="instala" role="dialog" aria-label="Instalar la app" hidden>
     <img alt="" width="56" height="56">
@@ -78,7 +161,9 @@
   <!-- ============ VISOR DE UNA HOJA ============ -->
   <div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Hoja desplegada" hidden>
     <div class="visor__velo" id="velo"></div>
+    <canvas class="visor__escena" id="visorEscena" aria-hidden="true"></canvas>
     <div class="visor__rollo" id="rollo"><div class="visor__lienzo"><div class="visor__etapa" id="visorEtapa"></div><article class="hoja" id="hoja"></article></div></div>
+    <div class="lupa" id="lupa" aria-hidden="true"></div>
     <div class="visor__sombra"></div>
     <button class="visor__cerrar" id="cerrar" type="button" aria-label="Cerrar la hoja y volver a la mampara">
       <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
@@ -103,21 +188,46 @@
 
   <!-- ============ PORTADA DEL LIBRO ============ -->
   <div class="tapa" id="tapa">
-    <div class="tapa__fondo"></div>
-    <div class="tapa__libro">
+    <div class="tapa__fondo"><canvas class="tapa__escena" id="tapaEscena" aria-hidden="true"></canvas></div>
+    <!-- en pantallas anchas el modo va fuera del libro (arriba a la izquierda); en las angostas, dentro, bajo «Abrir el libro» -->
+    <div class="modos modos--suelto" role="group" aria-label="Modo de la app">
+      <span class="modos__tit" aria-hidden="true">Modo</span>
+      <button type="button" data-modo="lite" aria-pressed="false" title="Carga rápido: sin fondos animados ni música">Lite</button>
+      <button type="button" data-modo="normal" aria-pressed="false" title="La mampara animada, como siempre">Normal</button>
+      <button type="button" data-modo="inmersivo" aria-pressed="false" title="3D, profundidad y más movimiento">Inmersivo</button>
+    </div>
+    <div class="tapa__libro" id="libro">
+     <div class="tapa__cuerpo" id="cuerpoLibro">
+      <div class="tapa__contra" aria-hidden="true"></div>
+      <div class="tapa__paginas" aria-hidden="true"><div class="tapa__primera"><span>México</span><i></i><span>1916 – 1940</span></div></div>
+      <div class="tapa__canto tapa__canto--der" aria-hidden="true"></div><div class="tapa__canto tapa__canto--arr" aria-hidden="true"></div><div class="tapa__canto tapa__canto--aba" aria-hidden="true"></div><div class="tapa__canto tapa__canto--lomo" aria-hidden="true"></div>
+      <div class="tapa__tapa" id="tapaFrente">
+      <div class="tapa__guarda" aria-hidden="true"></div>
       <div class="tapa__cubierta" data-k="0">
-        <div class="tapa__logos"><img src="img/logo-uaeh.svg" alt="Universidad Autónoma del Estado de Hidalgo"><img src="img/logo-apan.svg" alt="Escuela Superior de Apan"></div>
+        <div class="tapa__brillo" aria-hidden="true"></div>
+        <div class="tapa__logos"><img src="img/logo-uaeh.webp" alt="Universidad Autónoma del Estado de Hidalgo" width="369" height="168"><img src="img/logo-apan.webp" alt="Escuela Superior de Apan" width="408" height="168"></div>
         <div class="tapa__centro">
           <p class="tapa__ante">Principios de Economía · Libro digital</p>
           <h1 class="tapa__titulo"><span>México</span><span>1916 – 1940</span></h1>
           <p class="tapa__sub">El PIB y la deuda externa, de la Revolución al cardenismo</p>
         </div>
-        <svg class="tapa__chispa" id="tapaChispa" viewBox="0 0 250 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <svg class="tapa__chispa" id="tapaChispa" viewBox="0 0 250 46" preserveAspectRatio="none" aria-hidden="true"><polygon points="0.0,46 0.0,22.9 5.0,22.9 15.0,22.3 25.0,21.5 35.0,20.7 45.0,19.6 50.0,19.6 50.0,46" fill="#6b4a1f" opacity=".3"/><polyline points="0.0,22.9 5.0,22.9 15.0,22.3 25.0,21.5 35.0,20.7 45.0,19.6 50.0,19.6" fill="none" stroke="#6b4a1f" stroke-width="1.6" vector-effect="non-scaling-stroke"/><polygon points="50.0,46 50.0,19.6 55.0,19.6 65.0,19.1 75.0,18.1 85.0,18.6 90.0,17.7 90.0,46" fill="#8f3a17" opacity=".3"/><polyline points="50.0,19.6 55.0,19.6 65.0,19.1 75.0,18.1 85.0,18.6 90.0,17.7" fill="none" stroke="#8f3a17" stroke-width="1.6" vector-effect="non-scaling-stroke"/><polygon points="90.0,46 90.0,17.7 95.0,16.8 105.0,15.2 115.0,16.5 125.0,16.4 130.0,16.9 130.0,46" fill="#1f4d39" opacity=".3"/><polyline points="90.0,17.7 95.0,16.8 105.0,15.2 115.0,16.5 125.0,16.4 130.0,16.9" fill="none" stroke="#1f4d39" stroke-width="1.6" vector-effect="non-scaling-stroke"/><polygon points="130.0,46 130.0,16.9 135.0,17.4 145.0,19.3 155.0,18.4 165.0,22.5 175.0,19.9 185.0,18.1 190.0,17.1 190.0,46" fill="#3f4853" opacity=".3"/><polyline points="130.0,16.9 135.0,17.4 145.0,19.3 155.0,18.4 165.0,22.5 175.0,19.9 185.0,18.1 190.0,17.1" fill="none" stroke="#3f4853" stroke-width="1.6" vector-effect="non-scaling-stroke"/><polygon points="190.0,46 190.0,17.1 195.0,16.0 205.0,13.5 215.0,12.5 225.0,12.0 235.0,10.2 245.0,9.7 250.0,9.7 250.0,46" fill="#1a1208" opacity=".3"/><polyline points="190.0,17.1 195.0,16.0 205.0,13.5 215.0,12.5 225.0,12.0 235.0,10.2 245.0,9.7 250.0,9.7" fill="none" stroke="#1a1208" stroke-width="1.6" vector-effect="non-scaling-stroke"/><polyline points="5.0,45.0 15.0,33.4 25.0,32.3 35.0,33.1 45.0,32.8 55.0,32.5 65.0,11.1 75.0,10.5 85.0,8.8 95.0,25.7 105.0,25.6 115.0,24.2 125.0,23.1 135.0,22.6 145.0,22.4 155.0,25.0 165.0,29.6 175.0,30.8 185.0,30.8 195.0,30.5 205.0,30.1 215.0,29.8 225.0,32.8 235.0,34.3 245.0,34.5" fill="none" stroke="#1f3a5c" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
         <div class="tapa__acciones">
           <button class="tapa__abrir" id="abrir" type="button">Abrir el libro
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h13M11.5 5.5L16 10l-4.5 4.5"/></svg>
           </button>
-          <ol class="tapa__indice" id="indice" aria-label="Ir a una etapa"></ol>
+          <div class="modos modos--tapa" role="group" aria-label="Modo de la app">
+            <button type="button" data-modo="lite" aria-pressed="false" title="Carga rápido: sin fondos animados ni música">Lite</button>
+            <button type="button" data-modo="normal" aria-pressed="false" title="La mampara animada, como siempre">Normal</button>
+            <button type="button" data-modo="inmersivo" aria-pressed="false" title="3D, profundidad y más movimiento">Inmersivo</button>
+          </div>
+          <ol class="tapa__indice" id="indice" aria-label="Ir a una etapa">
+            <li><button type="button" data-k="0">Carranza</button></li>
+            <li><button type="button" data-k="1">Obregón</button></li>
+            <li><button type="button" data-k="2">Calles</button></li>
+            <li><button type="button" data-k="3">Maximato</button></li>
+            <li><button type="button" data-k="4">Cárdenas</button></li>
+          </ol>
         </div>
         <p class="tapa__equipo">
           <b><span>Celis Galindo Max</span> · <span>Muñoz Vidal Erick</span> · <span>Hernández Vázquez Luis Ángel</span> · <span>Acosta Calva Israel</span> · <span>Lopez Casillas Sinuhe Demir</span></b>
@@ -125,8 +235,13 @@
           <button class="tapa__creditos" type="button" data-abre="creditos">Créditos y fuentes</button>
         </p>
       </div>
+      </div>
+     </div>
     </div>
   </div>
+
+  <!-- polvo en la luz de la sala -->
+  <canvas class="polvo" id="polvo" aria-hidden="true"></canvas>
 </div>
 
 </body>
